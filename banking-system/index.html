@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banking & ATM Management System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Loading Screen -->
+        <div id="loading-screen" class="loading-screen">
+            <div class="loading-spinner"></div>
+            <p>Loading Banking System...</p>
+        </div>
+
+        <!-- Login Page -->
+        <div id="login-page" class="auth-page hidden">
+            <div class="auth-container">
+                <div class="auth-form">
+                    <div class="bank-logo">
+                        <h1>SecureBank</h1>
+                        <p>Your Trusted Banking Partner</p>
+                    </div>
+                    
+                    <form id="login-form">
+                        <h2>Sign In</h2>
+                        <div class="form-group">
+                            <label for="login-username" class="form-label">Username</label>
+                            <input type="text" id="login-username" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="login-password" class="form-label">Password</label>
+                            <input type="password" id="login-password" class="form-control" required>
+                        </div>
+                        <button type="submit" class="btn btn--primary btn--full-width">Sign In</button>
+                        <p class="auth-switch">
+                            Don't have an account? <a href="#" id="show-register">Register here</a>
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Register Page -->
+        <div id="register-page" class="auth-page hidden">
+            <div class="auth-container">
+                <div class="auth-form">
+                    <div class="bank-logo">
+                        <h1>SecureBank</h1>
+                        <p>Your Trusted Banking Partner</p>
+                    </div>
+                    
+                    <form id="register-form">
+                        <h2>Create Account</h2>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="register-firstname" class="form-label">First Name</label>
+                                <input type="text" id="register-firstname" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="register-lastname" class="form-label">Last Name</label>
+                                <input type="text" id="register-lastname" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="register-username" class="form-label">Username</label>
+                            <input type="text" id="register-username" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="register-email" class="form-label">Email</label>
+                            <input type="email" id="register-email" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="register-phone" class="form-label">Phone</label>
+                            <input type="tel" id="register-phone" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="register-password" class="form-label">Password</label>
+                            <input type="password" id="register-password" class="form-control" required>
+                        </div>
+                        <button type="submit" class="btn btn--primary btn--full-width">Create Account</button>
+                        <p class="auth-switch">
+                            Already have an account? <a href="#" id="show-login">Sign in here</a>
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Application -->
+        <div id="main-app" class="main-app hidden">
+            <!-- Header -->
+            <header class="app-header">
+                <div class="header-content">
+                    <div class="header-left">
+                        <h1 class="bank-title">SecureBank</h1>
+                    </div>
+                    <div class="header-right">
+                        <span id="user-welcome" class="user-welcome"></span>
+                        <button id="logout-btn" class="btn btn--outline btn--sm">Logout</button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Sidebar Navigation -->
+            <nav class="sidebar">
+                <ul class="nav-menu">
+                    <li><a href="#" class="nav-link active" data-page="dashboard">Dashboard</a></li>
+                    <li><a href="#" class="nav-link" data-page="accounts">Accounts</a></li>
+                    <li><a href="#" class="nav-link" data-page="transfer">Transfer</a></li>
+                    <li><a href="#" class="nav-link" data-page="transactions">Transactions</a></li>
+                    <li><a href="#" class="nav-link" data-page="atm">ATM Services</a></li>
+                    <li id="admin-nav" class="hidden"><a href="#" class="nav-link" data-page="admin">Admin Panel</a></li>
+                </ul>
+            </nav>
+
+            <!-- Main Content -->
+            <main class="main-content">
+                <!-- Dashboard Page -->
+                <div id="dashboard-page" class="page active">
+                    <h2>Dashboard</h2>
+                    <div class="dashboard-grid">
+                        <div class="account-cards" id="account-cards">
+                            <!-- Account cards will be populated by JavaScript -->
+                        </div>
+                        <div class="quick-actions">
+                            <h3>Quick Actions</h3>
+                            <div class="action-buttons">
+                                <button class="btn btn--primary" data-page="transfer">Transfer Money</button>
+                                <button class="btn btn--secondary" data-page="transactions">View Transactions</button>
+                                <button class="btn btn--outline" data-page="atm">ATM Services</button>
+                            </div>
+                        </div>
+                        <div class="recent-transactions">
+                            <h3>Recent Transactions</h3>
+                            <div id="recent-transactions-list"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Accounts Page -->
+                <div id="accounts-page" class="page hidden">
+                    <h2>My Accounts</h2>
+                    <div id="accounts-list" class="accounts-grid"></div>
+                </div>
+
+                <!-- Transfer Page -->
+                <div id="transfer-page" class="page hidden">
+                    <h2>Transfer Money</h2>
+                    <div class="transfer-container">
+                        <form id="transfer-form" class="card">
+                            <div class="card__body">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="from-account" class="form-label">From Account</label>
+                                        <select id="from-account" class="form-control" required>
+                                            <option value="">Select account</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="to-account" class="form-label">To Account</label>
+                                        <input type="text" id="to-account" class="form-control" placeholder="Account number" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="transfer-amount" class="form-label">Amount</label>
+                                    <input type="number" id="transfer-amount" class="form-control" step="0.01" min="0.01" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="transfer-description" class="form-label">Description</label>
+                                    <input type="text" id="transfer-description" class="form-control" placeholder="Optional description">
+                                </div>
+                                <button type="submit" class="btn btn--primary">Transfer Money</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Transactions Page -->
+                <div id="transactions-page" class="page hidden">
+                    <h2>Transaction History</h2>
+                    <div class="transactions-container">
+                        <div class="transaction-filters card">
+                            <div class="card__body">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="filter-account" class="form-label">Account</label>
+                                        <select id="filter-account" class="form-control">
+                                            <option value="">All accounts</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="filter-type" class="form-label">Type</label>
+                                        <select id="filter-type" class="form-control">
+                                            <option value="">All types</option>
+                                            <option value="DEPOSIT">Deposit</option>
+                                            <option value="WITHDRAWAL">Withdrawal</option>
+                                            <option value="TRANSFER">Transfer</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="transactions-list" class="transactions-list"></div>
+                    </div>
+                </div>
+
+                <!-- ATM Page -->
+                <div id="atm-page" class="page hidden">
+                    <h2>ATM Services</h2>
+                    <div class="atm-container">
+                        <div class="atm-interface card">
+                            <div class="card__body">
+                                <h3>ATM Operations</h3>
+                                <div class="atm-actions">
+                                    <button class="btn btn--primary atm-action" data-action="balance">Check Balance</button>
+                                    <button class="btn btn--secondary atm-action" data-action="withdraw">Cash Withdrawal</button>
+                                    <button class="btn btn--outline atm-action" data-action="statement">Mini Statement</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="atm-locations card">
+                            <div class="card__body">
+                                <h3>ATM Locations</h3>
+                                <div id="atm-locations-list"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Admin Page -->
+                <div id="admin-page" class="page hidden">
+                    <h2>Admin Panel</h2>
+                    <div class="admin-container">
+                        <div class="admin-stats">
+                            <div class="stat-card card">
+                                <div class="card__body">
+                                    <h4>Total Users</h4>
+                                    <p id="total-users" class="stat-number">0</p>
+                                </div>
+                            </div>
+                            <div class="stat-card card">
+                                <div class="card__body">
+                                    <h4>Total Accounts</h4>
+                                    <p id="total-accounts" class="stat-number">0</p>
+                                </div>
+                            </div>
+                            <div class="stat-card card">
+                                <div class="card__body">
+                                    <h4>Total Transactions</h4>
+                                    <p id="total-transactions" class="stat-number">0</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="admin-sections">
+                            <div class="users-management card">
+                                <div class="card__body">
+                                    <h3>User Management</h3>
+                                    <div id="users-list"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="accounts-management card">
+                                <div class="card__body">
+                                    <h3>Account Management</h3>
+                                    <div id="admin-accounts-list"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <!-- ATM Withdrawal Modal -->
+        <div id="atm-withdrawal-modal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Cash Withdrawal</h3>
+                    <button class="modal-close">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form id="atm-withdrawal-form">
+                        <div class="form-group">
+                            <label for="withdrawal-account" class="form-label">Select Account</label>
+                            <select id="withdrawal-account" class="form-control" required>
+                                <option value="">Select account</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="withdrawal-amount" class="form-label">Amount</label>
+                            <select id="withdrawal-amount" class="form-control" required>
+                                <option value="">Select amount</option>
+                                <option value="20">$20</option>
+                                <option value="50">$50</option>
+                                <option value="100">$100</option>
+                                <option value="200">$200</option>
+                                <option value="500">$500</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn--primary btn--full-width">Withdraw Cash</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Transaction Details Modal -->
+        <div id="transaction-modal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Transaction Details</h3>
+                    <button class="modal-close">&times;</button>
+                </div>
+                <div class="modal-body" id="transaction-details">
+                    <!-- Transaction details will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Success/Error Notifications -->
+        <div id="notification" class="notification hidden">
+            <div class="notification-content">
+                <span id="notification-message"></span>
+                <button id="notification-close">&times;</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
